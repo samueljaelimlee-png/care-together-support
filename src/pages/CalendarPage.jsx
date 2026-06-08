@@ -37,6 +37,16 @@ export default function CalendarPage() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['schedules'] }),
   });
 
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }) => base44.entities.VolunteerSchedule.update(id, data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['schedules'] }),
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id) => base44.entities.VolunteerSchedule.delete(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['schedules'] }),
+  });
+
   const filtered = filter === 'all' ? schedules : schedules.filter(s => s.type === filter);
 
   const handleDateClick = (date) => {
@@ -139,7 +149,10 @@ export default function CalendarPage() {
               open={modalOpen}
               onClose={() => setModalOpen(false)}
               date={selectedDate}
+              schedules={schedules}
               onSubmit={handleSubmit}
+              onEdit={(id, data) => updateMutation.mutate({ id, data })}
+              onDelete={(id) => deleteMutation.mutate(id)}
             />
           </div>
         )}
