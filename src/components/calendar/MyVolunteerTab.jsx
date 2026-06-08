@@ -1,103 +1,111 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent } from '@/components/ui/card';
-import { format } from 'date-fns';
+import { format, isPast, isToday, parseISO } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { Search, Calendar, Droplets, UtensilsCrossed } from 'lucide-react';
+import { Heart, Droplets, UtensilsCrossed } from 'lucide-react';
 
 const TYPE_CONFIG = {
-  laundry: { label: '빨래', icon: Droplets, color: 'bg-blue-50 text-blue-700 border-blue-200' },
-  meal: { label: '식사봉사', icon: UtensilsCrossed, color: 'bg-amber-50 text-amber-700 border-amber-200' },
+  laundry: { label: '빨래', icon: Droplets, bg: 'bg-blue-100', text: 'text-blue-600', badge: 'bg-blue-50 text-blue-600 border-blue-200' },
+  meal: { label: '식사봉사', icon: UtensilsCrossed, bg: 'bg-amber-100', text: 'text-amber-600', badge: 'bg-amber-50 text-amber-600 border-amber-200' },
 };
 
-export default function MyVolunteerTab() {
-  const [search, setSearch] = useState({ name: '', phone: '' });
-  const [submitted, setSubmitted] = useState(false);
+function ScheduleRow({ s }) {
+  const cfg = TYPE_CONFIG[s.type];
+  const Icon = cfg.icon;
+  const dateObj = parseISO(s.date);
+  const dateStr = format(dateObj, 'M/d (EEE)', { locale: ko });
 
-  const { data: schedules = [], refetch, isFetching } = useQuery({
-    queryKey: ['my-schedules', search.name, search.phone],
-    queryFn: () => {
-      const filters = {};
-      if (search.name) filters.volunteer_name = search.name;
-      if (search.phone) filters.volunteer_phone = search.phone;
-      return base44.entities.VolunteerSchedule.filter(filters, 'date');
-    },
-    enabled: submitted,
+  return (
+    <div className="flex items-center gap-3 px-4 py-3 bg-card rounded-xl border border-border/40">
+      <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${cfg.bg}`}>
+        <Icon className={`w-4 h-4 ${cfg.text}`} />
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="font-medium text-sm text-foreground">{s.volunteer_name}</span>
+          <span className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full border font-medium ${cfg.badge}`}>
+            <Icon className="w-3 h-3" />
+            {cfg.label}
+          </span>
+        </div>
+        <p className="text-xs text-muted-foreground mt-0.5">📅 {dateStr}</p>
+      </div>
+    </div>
+  );
+}
+
+export default function MyVolunteerTab() {
+  const { data: schedules = [], isLoading } = useQuery({
+    queryKey: ['schedules-all'],
+    queryFn: () => base44.entities.VolunteerSchedule.list('date'),
     initialData: [],
   });
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    setSubmitted(true);
-    refetch();
-  };
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
-  const sorted = [...schedules].sort((a, b) => a.date > b.date ? 1 : -1);
+  const upcoming = schedules.filter(s => {
+    const d = parseISO(s.date);
+    return d >= today;
+  }).sort((a, b) => a.date > b.date ? 1 : -1);
+
+  const past = schedules.filter(s => {
+    const d = parseISO(s.date);
+    return d < today;
+  }).sort((a, b) => a.date < b.date ? 1 : -1);
+
+  const uniqueVolunteers = new Set(schedules.map(s => s.volunteer_name)).size;
+
+  const stats = [
+    { label: '예정', value: upcoming.length, color: 'text-primary' },
+    { label: '완료', value: past.length, color: 'text-green-600' },
+    { label: '전체', value: schedules.length, color: 'text-foreground' },
+    { label: '봉사자', value: uniqueVolunteers, color: 'text-amber-600' },
+  ];
+
+  if (isLoading) return <div className="text-center py-12 text-muted-foreground text-sm">불러오는 중...</div>;
 
   return (
-    <div className="space-y-6">
-      <Card className="border-border/50">
-        <CardContent className="pt-5">
-          <form onSubmit={handleSearch} className="space-y-3">
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1.5">
-                <Label htmlFor="search-name">이름</Label>
-                <Input
-                  id="search-name"
-                  value={search.name}
-                  onChange={(e) => setSearch({ ...search, name: e.target.value })}
-                  placeholder="홍길동"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="search-phone">전화번호</Label>
-                <Input
-                  id="search-phone"
-                  value={search.phone}
-                  onChange={(e) => setSearch({ ...search, phone: e.target.value })}
-                  placeholder="010-1234-5678"
-                />
-              </div>
-            </div>
-            <Button type="submit" className="w-full gap-2" disabled={!search.name && !search.phone}>
-              <Search className="w-4 h-4" />
-              내 봉사 조회
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+    <div className="space-y-5">
+      {/* Title */}
+      <div className="text-center">
+        <h2 className="font-display text-xl font-bold text-foreground">전체 봉사 현황</h2>
+        <p className="text-xs text-muted-foreground mt-1">총 {schedules.length}건의 봉사가 등록되어 있습니다</p>
+      </div>
 
-      {submitted && !isFetching && (
+      {/* Stats */}
+      <div className="grid grid-cols-4 gap-2">
+        {stats.map(({ label, value, color }) => (
+          <div key={label} className="bg-card rounded-xl border border-border/40 py-3 text-center">
+            <p className={`text-2xl font-bold ${color}`}>{value}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{label}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Upcoming */}
+      <div>
+        <div className="flex items-center gap-1.5 mb-3">
+          <Heart className="w-4 h-4 text-primary fill-primary/30" />
+          <h3 className="font-heading font-semibold text-sm text-foreground">예정된 봉사</h3>
+        </div>
+        {upcoming.length === 0 ? (
+          <p className="text-sm text-muted-foreground text-center py-4">예정된 봉사가 없습니다</p>
+        ) : (
+          <div className="space-y-2">
+            {upcoming.map(s => <ScheduleRow key={s.id} s={s} />)}
+          </div>
+        )}
+      </div>
+
+      {/* Past */}
+      {past.length > 0 && (
         <div>
-          {sorted.length === 0 ? (
-            <div className="text-center py-12 text-muted-foreground">
-              <Calendar className="w-10 h-10 mx-auto mb-3 opacity-30" />
-              <p>등록된 봉사 일정이 없습니다</p>
-            </div>
-          ) : (
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground mb-3">총 {sorted.length}건의 봉사 일정</p>
-              {sorted.map((s) => {
-                const cfg = TYPE_CONFIG[s.type];
-                const Icon = cfg.icon;
-                return (
-                  <div key={s.id} className="flex items-center gap-3 p-3.5 rounded-xl border border-border/50 bg-card">
-                    <div className={`w-9 h-9 rounded-lg border flex items-center justify-center flex-shrink-0 ${cfg.color}`}>
-                      <Icon className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-sm">{format(new Date(s.date), 'yyyy년 M월 d일 (EEEE)', { locale: ko })}</p>
-                      <p className="text-xs text-muted-foreground">{cfg.label}</p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+          <h3 className="font-heading font-semibold text-sm text-muted-foreground mb-3">지난 봉사</h3>
+          <div className="space-y-2 opacity-70">
+            {past.map(s => <ScheduleRow key={s.id} s={s} />)}
+          </div>
         </div>
       )}
     </div>
