@@ -4,6 +4,7 @@ import { ko } from 'date-fns/locale';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Loader2, CheckCircle2 } from 'lucide-react';
@@ -112,6 +113,16 @@ export default function VolunteerModal({ open, onClose, date, onSubmit }) {
                 value={form.volunteer_email}
                 onChange={(e) => setForm({ ...form, volunteer_email: e.target.value })}
                 placeholder="example@email.com"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="memo">메모</Label>
+              <Textarea
+                id="memo"
+                value={form.memo}
+                onChange={(e) => setForm({ ...form, memo: e.target.value })}
+                placeholder="전달 사항이 있으면 적어주세요"
+                rows={3}
               />
             </div>
 
