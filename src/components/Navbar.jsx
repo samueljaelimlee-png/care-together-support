@@ -9,10 +9,10 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const links = [
-    { to: '/', label: '홈', icon: Heart },
-    { to: '/calendar', label: '캘린더', icon: Calendar },
-    { to: '/donate', label: '모금 신청', icon: HandHeart },
-  ];
+  { to: '/', label: '홈', icon: Heart },
+  { to: '/calendar', label: '캘린더', icon: Calendar },
+  { to: '/donate', label: '모금 신청', icon: HandHeart }];
+
 
   const isActive = (path) => location.pathname === path;
 
@@ -24,25 +24,25 @@ export default function Navbar() {
             <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
               <Heart className="w-5 h-5 text-primary fill-primary/30" />
             </div>
-            <span className="font-heading font-bold text-lg text-foreground tracking-tight">
-              CareTogether
+            <span className="font-heading font-bold text-lg text-foreground tracking-tight">CareTogether (함께돌봄)
+
             </span>
           </Link>
 
           {/* Desktop */}
           <div className="hidden md:flex items-center gap-1">
-            {links.map(({ to, label, icon: Icon }) => (
-              <Link key={to} to={to}>
+            {links.map(({ to, label, icon: Icon }) =>
+            <Link key={to} to={to}>
                 <Button
-                  variant={isActive(to) ? 'default' : 'ghost'}
-                  size="sm"
-                  className={`gap-2 rounded-full px-4 ${isActive(to) ? '' : 'text-muted-foreground hover:text-foreground'}`}
-                >
+                variant={isActive(to) ? 'default' : 'ghost'}
+                size="sm"
+                className={`gap-2 rounded-full px-4 ${isActive(to) ? '' : 'text-muted-foreground hover:text-foreground'}`}>
+                
                   <Icon className="w-4 h-4" />
                   {label}
                 </Button>
               </Link>
-            ))}
+            )}
             <Link to="/admin">
               <Button variant="ghost" size="sm" className="gap-2 rounded-full px-4 text-muted-foreground hover:text-foreground ml-2">
                 <Shield className="w-4 h-4" />
@@ -60,25 +60,25 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="md:hidden overflow-hidden border-t border-border/50 bg-card/95 backdrop-blur-xl"
-          >
+        {mobileOpen &&
+        <motion.div
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: 'auto', opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }}
+          className="md:hidden overflow-hidden border-t border-border/50 bg-card/95 backdrop-blur-xl">
+          
             <div className="px-4 py-3 space-y-1">
-              {links.map(({ to, label, icon: Icon }) => (
-                <Link key={to} to={to} onClick={() => setMobileOpen(false)}>
+              {links.map(({ to, label, icon: Icon }) =>
+            <Link key={to} to={to} onClick={() => setMobileOpen(false)}>
                   <Button
-                    variant={isActive(to) ? 'default' : 'ghost'}
-                    className={`w-full justify-start gap-3 ${isActive(to) ? '' : 'text-muted-foreground'}`}
-                  >
+                variant={isActive(to) ? 'default' : 'ghost'}
+                className={`w-full justify-start gap-3 ${isActive(to) ? '' : 'text-muted-foreground'}`}>
+                
                     <Icon className="w-4 h-4" />
                     {label}
                   </Button>
                 </Link>
-              ))}
+            )}
               <Link to="/admin" onClick={() => setMobileOpen(false)}>
                 <Button variant="ghost" className="w-full justify-start gap-3 text-muted-foreground">
                   <Shield className="w-4 h-4" />
@@ -87,8 +87,8 @@ export default function Navbar() {
               </Link>
             </div>
           </motion.div>
-        )}
+        }
       </AnimatePresence>
-    </nav>
-  );
+    </nav>);
+
 }
