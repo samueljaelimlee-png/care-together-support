@@ -150,6 +150,9 @@ export default function DonatePage() {
                         </Button>
                       ))}
                     </div>
+                    <p className="text-xs text-muted-foreground mt-1.5">
+                      💡 위 금액 외에도 원하시는 금액을 직접 입력하셔도 됩니다.
+                    </p>
                   </div>
 
                   <div className="space-y-2">
