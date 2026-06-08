@@ -13,7 +13,7 @@ import MessagesTab from '../components/calendar/MessagesTab';
 
 const TABS = [
   { key: 'calendar', label: '캘린더', icon: Calendar },
-  { key: 'my', label: '내 봉사', icon: User },
+  { key: 'my', label: '전체 봉사 현황', icon: User },
   { key: 'messages', label: '말씀', icon: BookOpen },
 ];
 
