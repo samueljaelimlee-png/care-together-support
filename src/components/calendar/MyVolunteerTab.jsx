@@ -31,7 +31,7 @@ function ScheduleRow({ s, onEdit, onDelete }) {
             {cfg.label}
           </span>
         </div>
-        <p className="text-xs text-muted-foreground mt-0.5">📅 {dateStr}</p>
+        <p className="text-xs text-muted-foreground mt-0.5">📅 {dateStr}{s.time_slot ? ` · ⏰ ${s.time_slot}` : ''}</p>
         {s.memo && <p className="text-xs text-muted-foreground mt-0.5 truncate">📝 {s.memo}</p>}
       </div>
       <div className="flex gap-1 flex-shrink-0">

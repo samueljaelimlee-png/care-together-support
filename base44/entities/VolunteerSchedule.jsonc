@@ -15,6 +15,10 @@
       ],
       "description": "\ubd09\uc0ac \uc720\ud615 (\ube68\ub798/\uc2dd\uc0ac\ubd09\uc0ac)"
     },
+    "time_slot": {
+      "type": "string",
+      "description": "\ubd09\uc0ac \uc2dc\uac04\ub300 (\uc608: 07:00-08:00)"
+    },
     "volunteer_name": {
       "type": "string",
       "description": "\ubd09\uc0ac\uc790 \uc774\ub984"

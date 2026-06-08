@@ -7,7 +7,15 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Loader2, CheckCircle2 } from 'lucide-react';
+
+const TIME_SLOTS = [
+  '07:00-08:00', '08:00-09:00', '09:00-10:00', '10:00-11:00',
+  '11:00-12:00', '12:00-13:00', '13:00-14:00', '14:00-15:00',
+  '15:00-16:00', '16:00-17:00', '17:00-18:00', '18:00-19:00',
+  '19:00-20:00', '20:00-21:00', '21:00-22:00',
+];
 
 export default function VolunteerModal({ open, onClose, date, onSubmit }) {
   const [form, setForm] = useState({
@@ -15,6 +23,7 @@ export default function VolunteerModal({ open, onClose, date, onSubmit }) {
     volunteer_phone: '',
     volunteer_email: '',
     memo: '',
+    time_slot: '',
   });
   const [types, setTypes] = useState({ laundry: false, meal: false });
   const [loading, setLoading] = useState(false);
@@ -36,7 +45,7 @@ export default function VolunteerModal({ open, onClose, date, onSubmit }) {
     setDone(true);
     setTimeout(() => {
       setDone(false);
-      setForm({ volunteer_name: '', volunteer_phone: '', volunteer_email: '' });
+      setForm({ volunteer_name: '', volunteer_phone: '', volunteer_email: '', memo: '', time_slot: '' });
       setTypes({ laundry: false, meal: false });
       onClose();
     }, 1500);
@@ -61,6 +70,20 @@ export default function VolunteerModal({ open, onClose, date, onSubmit }) {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label>시간대 *</Label>
+              <Select value={form.time_slot} onValueChange={(v) => setForm({ ...form, time_slot: v })}>
+                <SelectTrigger>
+                  <SelectValue placeholder="시간대를 선택해주세요" />
+                </SelectTrigger>
+                <SelectContent>
+                  {TIME_SLOTS.map((slot) => (
+                    <SelectItem key={slot} value={slot}>{slot}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
             <div className="space-y-2">
               <Label>봉사 유형 (중복 선택 가능) *</Label>
               <div className="flex gap-6">
