@@ -4,13 +4,15 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { CheckCircle2, XCircle, Clock } from 'lucide-react';
+import { CheckCircle2, XCircle, Clock, List } from 'lucide-react';
 
 const STATUS_CONFIG = {
-  pending: { label: '대기', icon: Clock, variant: 'outline', className: 'border-amber-300 text-amber-700 bg-amber-50' },
-  confirmed: { label: '확인', icon: CheckCircle2, variant: 'outline', className: 'border-green-300 text-green-700 bg-green-50' },
-  cancelled: { label: '취소', icon: XCircle, variant: 'outline', className: 'border-red-300 text-red-700 bg-red-50' },
+  pending: { label: '대기', icon: Clock, className: 'border-amber-300 text-amber-700 bg-amber-50' },
+  confirmed: { label: '확인', icon: CheckCircle2, className: 'border-green-300 text-green-700 bg-green-50' },
+  cancelled: { label: '취소', icon: XCircle, className: 'border-red-300 text-red-700 bg-red-50' },
 };
+
+const fmtAmount = (v) => `${new Intl.NumberFormat('ko-KR').format(v)}원`;
 
 export default function DonationTable({ donations, onStatusChange, statusFilter, onFilterChange }) {
   const filtered = statusFilter === 'all' ? donations : donations.filter(d => d.status === statusFilter);
@@ -18,9 +20,12 @@ export default function DonationTable({ donations, onStatusChange, statusFilter,
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="font-heading font-semibold text-lg">모금 신청 목록</h3>
+        <h3 className="font-heading font-semibold text-lg flex items-center gap-2">
+          <List className="w-5 h-5 text-primary" />
+          모금 신청 목록
+        </h3>
         <Select value={statusFilter} onValueChange={onFilterChange}>
-          <SelectTrigger className="w-32 rounded-xl">
+          <SelectTrigger className="w-28 rounded-xl">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -62,15 +67,11 @@ export default function DonationTable({ donations, onStatusChange, statusFilter,
                     <TableRow key={d.id} className="hover:bg-muted/30">
                       <TableCell className="font-medium">{d.donor_name}</TableCell>
                       <TableCell className="text-sm">{d.donor_phone}</TableCell>
-                      <TableCell className="text-sm">{d.donor_email}</TableCell>
-                      <TableCell className="text-right font-semibold">
-                        ${new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(d.amount)}
-                      </TableCell>
-                      <TableCell className="text-sm text-muted-foreground max-w-[150px] truncate">
-                        {d.message || '-'}
-                      </TableCell>
+                      <TableCell className="text-sm text-muted-foreground">{d.donor_email}</TableCell>
+                      <TableCell className="text-right font-semibold">{fmtAmount(d.amount)}</TableCell>
+                      <TableCell className="text-sm text-muted-foreground max-w-[150px] truncate">{d.message || '-'}</TableCell>
                       <TableCell>
-                        <Badge className={`gap-1 ${cfg.className}`}>
+                        <Badge variant="outline" className={`gap-1 ${cfg.className}`}>
                           <Icon className="w-3 h-3" />
                           {cfg.label}
                         </Badge>
@@ -81,24 +82,14 @@ export default function DonationTable({ donations, onStatusChange, statusFilter,
                       <TableCell>
                         <div className="flex gap-1">
                           {d.status !== 'confirmed' && (
-                            <Button
-                              size="sm"
-                              variant="ghost"
+                            <Button size="sm" variant="ghost"
                               className="h-7 px-2 text-green-600 hover:text-green-700 hover:bg-green-50"
-                              onClick={() => onStatusChange(d.id, 'confirmed')}
-                            >
-                              확인
-                            </Button>
+                              onClick={() => onStatusChange(d.id, 'confirmed')}>확인</Button>
                           )}
                           {d.status !== 'cancelled' && (
-                            <Button
-                              size="sm"
-                              variant="ghost"
+                            <Button size="sm" variant="ghost"
                               className="h-7 px-2 text-red-600 hover:text-red-700 hover:bg-red-50"
-                              onClick={() => onStatusChange(d.id, 'cancelled')}
-                            >
-                              취소
-                            </Button>
+                              onClick={() => onStatusChange(d.id, 'cancelled')}>취소</Button>
                           )}
                         </div>
                       </TableCell>
