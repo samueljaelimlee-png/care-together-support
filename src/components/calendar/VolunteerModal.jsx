@@ -17,6 +17,18 @@ const TIME_SLOTS = [
   '19:00-20:00', '20:00-21:00', '21:00-22:00',
 ];
 
+function formatTimeSlot(slot) {
+  if (!slot) return slot;
+  const [start, end] = slot.split('-');
+  const fmt = (t) => {
+    const [h, m] = t.split(':').map(Number);
+    const ampm = h < 12 ? '오전' : '오후';
+    const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
+    return `${ampm} ${h12}:${String(m).padStart(2, '0')}`;
+  };
+  return `${fmt(start)} ~ ${fmt(end)}`;
+}
+
 export default function VolunteerModal({ open, onClose, date, onSubmit }) {
   const [form, setForm] = useState({
     volunteer_name: '',
@@ -78,7 +90,7 @@ export default function VolunteerModal({ open, onClose, date, onSubmit }) {
                 </SelectTrigger>
                 <SelectContent>
                   {TIME_SLOTS.map((slot) => (
-                    <SelectItem key={slot} value={slot}>{slot}</SelectItem>
+                    <SelectItem key={slot} value={slot}>{formatTimeSlot(slot)}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>

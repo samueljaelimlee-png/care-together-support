@@ -24,7 +24,6 @@ export default function Home() {
   const { data: donations = [] } = useQuery({
     queryKey: ['donations-total'],
     queryFn: () => base44.entities.Donation.filter({ status: 'confirmed' }),
-    enabled: isAdmin,
     initialData: [],
   });
 
@@ -51,8 +50,8 @@ export default function Home() {
         </p>
       </motion.div>
 
-      {/* Donation Total - 관리자만 표시 */}
-      {isAdmin && <DonationTotal total={total} count={donations.length} />}
+      {/* Donation Total */}
+      <DonationTotal total={total} count={donations.length} />
 
       {/* Quick Actions */}
       <QuickActions />
