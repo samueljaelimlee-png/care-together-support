@@ -4,6 +4,18 @@ import { base44 } from '@/api/base44Client';
 import { format, parseISO } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { Heart, Droplets, UtensilsCrossed, Pencil, Trash2 } from 'lucide-react';
+
+function formatTimeSlot(slot) {
+  if (!slot) return '';
+  const [start, end] = slot.split('-');
+  const fmt = (t) => {
+    const [h, m] = t.split(':').map(Number);
+    const ampm = h < 12 ? '오전' : '오후';
+    const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
+    return `${ampm} ${h12}:${String(m).padStart(2, '0')}`;
+  };
+  return `${fmt(start)} ~ ${fmt(end)}`;
+}
 import { Button } from '@/components/ui/button';
 import VolunteerEditModal from './VolunteerEditModal';
 
@@ -31,7 +43,7 @@ function ScheduleRow({ s, onEdit, onDelete }) {
             {cfg.label}
           </span>
         </div>
-        <p className="text-xs text-muted-foreground mt-0.5">📅 {dateStr}{s.time_slot ? ` · ⏰ ${s.time_slot}` : ''}</p>
+        <p className="text-xs text-muted-foreground mt-0.5">📅 {dateStr}{s.time_slot ? ` · ⏰ ${formatTimeSlot(s.time_slot)}` : ''}</p>
         {s.memo && <p className="text-xs text-muted-foreground mt-0.5 truncate">📝 {s.memo}</p>}
       </div>
       <div className="flex gap-1 flex-shrink-0">
