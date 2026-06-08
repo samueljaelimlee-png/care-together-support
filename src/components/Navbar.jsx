@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Heart, Calendar, HandHeart, Menu, X, Shield } from 'lucide-react';
+import { Heart, Calendar, HandHeart, Menu, X, Shield, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -11,7 +11,9 @@ export default function Navbar() {
   const links = [
   { to: '/', label: '홈', icon: Heart },
   { to: '/calendar', label: '캘린더', icon: Calendar },
-  { to: '/donate', label: '모금 신청', icon: HandHeart }];
+  { to: '/donate', label: '모금 신청', icon: HandHeart },
+  { to: '/messages', label: '말씀', icon: BookOpen },
+  ];
 
 
   const isActive = (path) => location.pathname === path;

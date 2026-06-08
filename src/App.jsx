@@ -12,6 +12,7 @@ import Home from './pages/Home';
 import CalendarPage from './pages/CalendarPage';
 import DonatePage from './pages/DonatePage';
 import AdminDashboard from './pages/AdminDashboard';
+import MessagesPage from './pages/MessagesPage';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import ForgotPassword from '@/pages/ForgotPassword';
@@ -28,6 +29,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/calendar" element={<CalendarPage />} />
               <Route path="/donate" element={<DonatePage />} />
+              <Route path="/messages" element={<MessagesPage />} />
             </Route>
 
             {/* Auth pages */}

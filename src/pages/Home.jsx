@@ -2,9 +2,15 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { motion } from 'framer-motion';
-import { Heart } from 'lucide-react';
+import { Heart, BookOpen, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import DonationTotal from '../components/home/DonationTotal';
 import QuickActions from '../components/home/QuickActions';
+
+const FEATURED_VERSE = {
+  verse: '갈라디아서 6:2',
+  text: '너희가 서로 짐을 지라.\n그리하여 그리스도의 법을 성취하라.',
+};
 
 export default function Home() {
   const { data: donations = [] } = useQuery({
@@ -41,6 +47,29 @@ export default function Home() {
 
       {/* Quick Actions */}
       <QuickActions />
+
+      {/* Featured Verse */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+      >
+        <Link to="/messages" className="block group">
+          <div className="bg-primary/10 rounded-2xl p-6 border border-primary/20 hover:bg-primary/15 transition-colors">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2 text-primary">
+                <BookOpen className="w-4 h-4" />
+                <span className="text-sm font-semibold">말씀</span>
+              </div>
+              <ChevronRight className="w-4 h-4 text-primary/60 group-hover:translate-x-1 transition-transform" />
+            </div>
+            <blockquote className="text-foreground/80 text-sm leading-relaxed whitespace-pre-line font-medium mb-2">
+              "{FEATURED_VERSE.text}"
+            </blockquote>
+            <p className="text-xs text-primary/70 font-semibold">{FEATURED_VERSE.verse}</p>
+          </div>
+        </Link>
+      </motion.div>
     </div>
   );
 }
