@@ -1,16 +1,18 @@
-import React from 'react';
-import { useQuery } from '@tanstack/react-query';
+import React, { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
-import { format, isPast, isToday, parseISO } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { Heart, Droplets, UtensilsCrossed } from 'lucide-react';
+import { Heart, Droplets, UtensilsCrossed, Pencil, Trash2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import VolunteerEditModal from './VolunteerEditModal';
 
 const TYPE_CONFIG = {
   laundry: { label: '빨래', icon: Droplets, bg: 'bg-blue-100', text: 'text-blue-600', badge: 'bg-blue-50 text-blue-600 border-blue-200' },
   meal: { label: '식사봉사', icon: UtensilsCrossed, bg: 'bg-amber-100', text: 'text-amber-600', badge: 'bg-amber-50 text-amber-600 border-amber-200' },
 };
 
-function ScheduleRow({ s }) {
+function ScheduleRow({ s, onEdit, onDelete }) {
   const cfg = TYPE_CONFIG[s.type];
   const Icon = cfg.icon;
   const dateObj = parseISO(s.date);
@@ -30,16 +32,45 @@ function ScheduleRow({ s }) {
           </span>
         </div>
         <p className="text-xs text-muted-foreground mt-0.5">📅 {dateStr}</p>
+        {s.memo && <p className="text-xs text-muted-foreground mt-0.5 truncate">📝 {s.memo}</p>}
+      </div>
+      <div className="flex gap-1 flex-shrink-0">
+        <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => onEdit(s)}>
+          <Pencil className="w-3 h-3" />
+        </Button>
+        <Button size="icon" variant="ghost" className="h-7 w-7 text-destructive hover:text-destructive" onClick={() => onDelete(s.id)}>
+          <Trash2 className="w-3 h-3" />
+        </Button>
       </div>
     </div>
   );
 }
 
 export default function MyVolunteerTab() {
+  const queryClient = useQueryClient();
+  const [editTarget, setEditTarget] = useState(null);
+
   const { data: schedules = [], isLoading } = useQuery({
     queryKey: ['schedules-all'],
     queryFn: () => base44.entities.VolunteerSchedule.list('date'),
     initialData: [],
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }) => base44.entities.VolunteerSchedule.update(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['schedules-all'] });
+      queryClient.invalidateQueries({ queryKey: ['schedules'] });
+      setEditTarget(null);
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id) => base44.entities.VolunteerSchedule.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['schedules-all'] });
+      queryClient.invalidateQueries({ queryKey: ['schedules'] });
+    },
   });
 
   const today = new Date();
@@ -68,6 +99,12 @@ export default function MyVolunteerTab() {
 
   return (
     <div className="space-y-5">
+      <VolunteerEditModal
+        open={!!editTarget}
+        onClose={() => setEditTarget(null)}
+        schedule={editTarget}
+        onSave={(id, data) => updateMutation.mutate({ id, data })}
+      />
       {/* Title */}
       <div className="text-center">
         <h2 className="font-display text-xl font-bold text-foreground">전체 봉사 현황</h2>
@@ -94,7 +131,7 @@ export default function MyVolunteerTab() {
           <p className="text-sm text-muted-foreground text-center py-4">예정된 봉사가 없습니다</p>
         ) : (
           <div className="space-y-2">
-            {upcoming.map(s => <ScheduleRow key={s.id} s={s} />)}
+            {upcoming.map(s => <ScheduleRow key={s.id} s={s} onEdit={setEditTarget} onDelete={(id) => deleteMutation.mutate(id)} />)}
           </div>
         )}
       </div>
@@ -104,7 +141,7 @@ export default function MyVolunteerTab() {
         <div>
           <h3 className="font-heading font-semibold text-sm text-muted-foreground mb-3">지난 봉사</h3>
           <div className="space-y-2 opacity-70">
-            {past.map(s => <ScheduleRow key={s.id} s={s} />)}
+            {past.map(s => <ScheduleRow key={s.id} s={s} onEdit={setEditTarget} onDelete={(id) => deleteMutation.mutate(id)} />)}
           </div>
         </div>
       )}

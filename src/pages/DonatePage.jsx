@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,10 +8,12 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { Loader2, CheckCircle2, Heart, HandHeart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import MyDonations from '@/components/donate/MyDonations';
 
 const PRESET_AMOUNTS = [10, 30, 50, 100];
 
 export default function DonatePage() {
+  const queryClient = useQueryClient();
   const [form, setForm] = useState({
     donor_name: '',
     donor_phone: '',
@@ -20,10 +22,13 @@ export default function DonatePage() {
     message: '',
   });
   const [done, setDone] = useState(false);
+  const [submittedEmail, setSubmittedEmail] = useState('');
 
   const mutation = useMutation({
     mutationFn: (data) => base44.entities.Donation.create({ ...data, status: 'pending' }),
     onSuccess: () => {
+      setSubmittedEmail(form.donor_email);
+      queryClient.invalidateQueries({ queryKey: ['my-donations', form.donor_email] });
       setDone(true);
     },
   });
@@ -58,7 +63,7 @@ export default function DonatePage() {
             key="done"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="text-center py-16 space-y-4"
+            className="text-center py-12 space-y-4"
           >
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-50">
               <CheckCircle2 className="w-10 h-10 text-green-500" />
@@ -70,6 +75,8 @@ export default function DonatePage() {
             <Button variant="outline" className="rounded-xl mt-4" onClick={handleReset}>
               추가 신청하기
             </Button>
+
+            <MyDonations donorEmail={submittedEmail} />
           </motion.div>
         ) : (
           <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -171,6 +178,11 @@ export default function DonatePage() {
                 </form>
               </CardContent>
             </Card>
+
+            {/* 이메일 입력 후 내 신청 내역 조회 */}
+            {form.donor_email && form.donor_email.includes('@') && (
+              <MyDonations donorEmail={form.donor_email} />
+            )}
           </motion.div>
         )}
       </AnimatePresence>
