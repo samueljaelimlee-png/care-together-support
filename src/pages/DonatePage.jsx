@@ -19,6 +19,7 @@ export default function DonatePage() {
     donor_phone: '',
     donor_email: '',
     amount: '',
+    payment_method: '',
     message: '',
   });
   const [done, setDone] = useState(false);
@@ -35,12 +36,16 @@ export default function DonatePage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!form.payment_method) {
+      alert('전달 방법을 선택해주세요.');
+      return;
+    }
     mutation.mutate({ ...form, amount: Number(form.amount) });
   };
 
   const handleReset = () => {
     setDone(false);
-    setForm({ donor_name: '', donor_phone: '', donor_email: '', amount: '', message: '' });
+    setForm({ donor_name: '', donor_phone: '', donor_email: '', amount: '', payment_method: '', message: '' });
   };
 
   return (
@@ -153,6 +158,30 @@ export default function DonatePage() {
                     <p className="text-xs text-muted-foreground mt-1.5">
                       💡 위 금액 외에도 원하시는 금액을 직접 입력하셔도 됩니다.
                     </p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>전달 방법 *</Label>
+                    <div className="grid grid-cols-2 gap-3">
+                      {[
+                        { value: 'venmo', label: 'Venmo 송금', emoji: '📱' },
+                        { value: 'cash', label: 'Cash 전달', emoji: '💵' },
+                      ].map(({ value, label, emoji }) => (
+                        <button
+                          key={value}
+                          type="button"
+                          onClick={() => setForm({ ...form, payment_method: value })}
+                          className={`flex flex-col items-center justify-center gap-1.5 rounded-xl border-2 py-4 text-sm font-medium transition-all ${
+                            form.payment_method === value
+                              ? 'border-primary bg-primary/10 text-primary'
+                              : 'border-border bg-background text-muted-foreground hover:border-primary/50'
+                          }`}
+                        >
+                          <span className="text-2xl">{emoji}</span>
+                          {label}
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
                   <div className="space-y-2">

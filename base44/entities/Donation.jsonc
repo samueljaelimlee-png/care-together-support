@@ -18,6 +18,14 @@
       "type": "number",
       "description": "\uae30\ubd80 \uae08\uc561 (\uc6d0)"
     },
+    "payment_method": {
+      "type": "string",
+      "enum": [
+        "venmo",
+        "cash"
+      ],
+      "description": "\uc804\ub2ec \ubc29\ubc95 (Venmo \uc1a1\uae08 / Cash \uc804\ub2ec)"
+    },
     "message": {
       "type": "string",
       "description": "\uc751\uc6d0 \uba54\uc2dc\uc9c0"
@@ -37,6 +45,7 @@
     "donor_name",
     "donor_phone",
     "donor_email",
-    "amount"
+    "amount",
+    "payment_method"
   ]
 }
