@@ -1,0 +1,42 @@
+{
+  "name": "Donation",
+  "type": "object",
+  "properties": {
+    "donor_name": {
+      "type": "string",
+      "description": "\uae30\ubd80\uc790 \uc774\ub984"
+    },
+    "donor_phone": {
+      "type": "string",
+      "description": "\uae30\ubd80\uc790 \uc804\ud654\ubc88\ud638"
+    },
+    "donor_email": {
+      "type": "string",
+      "description": "\uae30\ubd80\uc790 \uc774\uba54\uc77c"
+    },
+    "amount": {
+      "type": "number",
+      "description": "\uae30\ubd80 \uae08\uc561 (\uc6d0)"
+    },
+    "message": {
+      "type": "string",
+      "description": "\uc751\uc6d0 \uba54\uc2dc\uc9c0"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "confirmed",
+        "cancelled"
+      ],
+      "default": "pending",
+      "description": "\uc0c1\ud0dc"
+    }
+  },
+  "required": [
+    "donor_name",
+    "donor_phone",
+    "donor_email",
+    "amount"
+  ]
+}

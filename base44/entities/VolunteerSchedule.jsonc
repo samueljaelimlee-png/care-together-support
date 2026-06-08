@@ -1,0 +1,36 @@
+{
+  "name": "VolunteerSchedule",
+  "type": "object",
+  "properties": {
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "\ubd09\uc0ac \ub0a0\uc9dc"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "laundry",
+        "meal"
+      ],
+      "description": "\ubd09\uc0ac \uc720\ud615 (\ube68\ub798/\uc2dd\uc0ac\ubd09\uc0ac)"
+    },
+    "volunteer_name": {
+      "type": "string",
+      "description": "\ubd09\uc0ac\uc790 \uc774\ub984"
+    },
+    "volunteer_phone": {
+      "type": "string",
+      "description": "\ubd09\uc0ac\uc790 \uc804\ud654\ubc88\ud638"
+    },
+    "volunteer_email": {
+      "type": "string",
+      "description": "\ubd09\uc0ac\uc790 \uc774\uba54\uc77c"
+    }
+  },
+  "required": [
+    "date",
+    "type",
+    "volunteer_name"
+  ]
+}
