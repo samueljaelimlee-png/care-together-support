@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { motion } from 'framer-motion';
-import { Heart, BookOpen, ChevronRight } from 'lucide-react';
+import { Heart, BookOpen, ChevronRight, HelpCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import DonationTotal from '../components/home/DonationTotal';
 import QuickActions from '../components/home/QuickActions';
@@ -48,6 +48,28 @@ export default function Home() {
         <p className="text-muted-foreground max-w-md mx-auto">
           따뜻한 마음으로 함께하는 돌봄 커뮤니티
         </p>
+      </motion.div>
+
+      {/* New User Guide Banner */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <Link to="/guide">
+          <div className="flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-2xl px-4 py-3.5 hover:bg-amber-100 transition-colors group">
+            <div className="w-9 h-9 rounded-xl bg-amber-100 flex items-center justify-center flex-shrink-0">
+              <HelpCircle className="w-5 h-5 text-amber-600" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-amber-800">처음 오셨나요? 👋</p>
+              <p className="text-xs text-amber-700 mt-0.5">
+                오른쪽 위 <span className="font-bold">☰ 메뉴 → 이용 안내</span>를 먼저 확인해 보세요!
+              </p>
+            </div>
+            <ChevronRight className="w-4 h-4 text-amber-500 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+          </div>
+        </Link>
       </motion.div>
 
       {/* Donation Total */}
