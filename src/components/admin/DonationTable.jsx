@@ -12,7 +12,7 @@ const STATUS_CONFIG = {
   cancelled: { label: '취소', icon: XCircle, className: 'border-red-300 text-red-700 bg-red-50' },
 };
 
-const fmtAmount = (v) => `${new Intl.NumberFormat('ko-KR').format(v)}원`;
+const fmtAmount = (v) => `$${new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v)}`;
 
 export default function DonationTable({ donations, onStatusChange, statusFilter, onFilterChange }) {
   const filtered = statusFilter === 'all' ? donations : donations.filter(d => d.status === statusFilter);

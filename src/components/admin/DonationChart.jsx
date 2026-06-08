@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { BarChart2 } from 'lucide-react';
 
-const fmt = (v) => `${new Intl.NumberFormat('ko-KR').format(v)}원`;
+const fmt = (v) => `$${new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v)}`;
 
 export default function DonationChart({ donations }) {
   // Group confirmed donations by month
@@ -37,7 +37,7 @@ export default function DonationChart({ donations }) {
           <BarChart data={data} margin={{ top: 8, right: 16, left: 8, bottom: 4 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
             <XAxis dataKey="label" tick={{ fontSize: 12 }} />
-            <YAxis tickFormatter={(v) => `${new Intl.NumberFormat('ko-KR', { notation: 'compact' }).format(v)}`} tick={{ fontSize: 11 }} />
+            <YAxis tickFormatter={(v) => `$${new Intl.NumberFormat('en-US', { notation: 'compact' }).format(v)}`} tick={{ fontSize: 11 }} />
             <Tooltip
               formatter={(value) => [fmt(value), '모금액']}
               labelStyle={{ fontWeight: 600 }}

@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { HandHeart, Clock, CheckCircle2, XCircle, TrendingUp } from 'lucide-react';
 
-const fmt = (v) => `${new Intl.NumberFormat('ko-KR').format(v)}원`;
+const fmt = (v) => `$${new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v)}`;
 
 export default function DonationStats({ donations }) {
   const confirmed = donations.filter(d => d.status === 'confirmed');
