@@ -52,19 +52,19 @@ export default function CalendarPage() {
     <div className="max-w-5xl mx-auto px-4 py-6 md:py-10">
       {/* Tab navigation — matches original app style */}
       <div className="flex justify-center mb-6">
-        <div className="inline-flex bg-muted rounded-xl p-1 gap-1">
+        <div className="inline-flex bg-muted rounded-xl p-1 gap-1 w-full max-w-sm sm:w-auto">
           {TABS.map(({ key, label, icon: Icon }) => (
             <button
               key={key}
               onClick={() => setActiveTab(key)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              className={`flex items-center justify-center gap-1.5 flex-1 sm:flex-none sm:px-4 px-2 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
                 activeTab === key
                   ? 'bg-card shadow-sm text-foreground'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              <Icon className="w-4 h-4" />
-              {label}
+              <Icon className="w-4 h-4 flex-shrink-0" />
+              <span className="truncate">{label}</span>
             </button>
           ))}
         </div>
