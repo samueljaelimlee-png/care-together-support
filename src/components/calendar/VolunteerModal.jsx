@@ -13,6 +13,7 @@ export default function VolunteerModal({ open, onClose, date, onSubmit }) {
     volunteer_name: '',
     volunteer_phone: '',
     volunteer_email: '',
+    memo: '',
   });
   const [types, setTypes] = useState({ laundry: false, meal: false });
   const [loading, setLoading] = useState(false);
