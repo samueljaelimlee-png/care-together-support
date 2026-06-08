@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Heart, TrendingUp } from 'lucide-react';
 
 export default function DonationTotal({ total, count }) {
-  const formattedTotal = new Intl.NumberFormat('ko-KR').format(total);
+  const formattedTotal = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(total);
 
   return (
     <motion.div
@@ -32,7 +32,7 @@ export default function DonationTotal({ total, count }) {
           transition={{ delay: 0.3, duration: 0.5 }}
         >
           <p className="text-4xl md:text-5xl font-display font-extrabold tracking-tight mb-2">
-            ₩{formattedTotal}
+            ${formattedTotal}
           </p>
         </motion.div>
 

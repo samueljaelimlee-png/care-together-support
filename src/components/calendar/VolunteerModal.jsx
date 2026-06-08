@@ -5,26 +5,37 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Loader2, CheckCircle2 } from 'lucide-react';
 
 export default function VolunteerModal({ open, onClose, date, onSubmit }) {
-  const [form, setForm] = useState({ volunteer_name: '', volunteer_phone: '', volunteer_email: '', type: 'laundry' });
+  const [form, setForm] = useState({
+    volunteer_name: '',
+    volunteer_phone: '',
+    volunteer_email: '',
+  });
+  const [types, setTypes] = useState({ laundry: false, meal: false });
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
 
+  const toggleType = (key) => setTypes((prev) => ({ ...prev, [key]: !prev[key] }));
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!types.laundry && !types.meal) return;
     setLoading(true);
-    await onSubmit({
-      ...form,
-      date: format(date, 'yyyy-MM-dd'),
-    });
+    const dateStr = format(date, 'yyyy-MM-dd');
+    // Create one record per selected type
+    const promises = [];
+    if (types.laundry) promises.push(onSubmit({ ...form, type: 'laundry', date: dateStr }));
+    if (types.meal) promises.push(onSubmit({ ...form, type: 'meal', date: dateStr }));
+    await Promise.all(promises);
     setLoading(false);
     setDone(true);
     setTimeout(() => {
       setDone(false);
-      setForm({ volunteer_name: '', volunteer_phone: '', volunteer_email: '', type: 'laundry' });
+      setForm({ volunteer_name: '', volunteer_phone: '', volunteer_email: '' });
+      setTypes({ laundry: false, meal: false });
       onClose();
     }, 1500);
   };
@@ -49,17 +60,28 @@ export default function VolunteerModal({ open, onClose, date, onSubmit }) {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label>봉사 유형</Label>
-              <RadioGroup value={form.type} onValueChange={(v) => setForm({ ...form, type: v })} className="flex gap-4">
+              <Label>봉사 유형 (중복 선택 가능) *</Label>
+              <div className="flex gap-6">
                 <div className="flex items-center gap-2">
-                  <RadioGroupItem value="laundry" id="laundry" />
-                  <Label htmlFor="laundry" className="cursor-pointer">🧺 빨래</Label>
+                  <Checkbox
+                    id="laundry"
+                    checked={types.laundry}
+                    onCheckedChange={() => toggleType('laundry')}
+                  />
+                  <Label htmlFor="laundry" className="cursor-pointer font-normal">🧺 빨래</Label>
                 </div>
                 <div className="flex items-center gap-2">
-                  <RadioGroupItem value="meal" id="meal" />
-                  <Label htmlFor="meal" className="cursor-pointer">🍽️ 식사봉사</Label>
+                  <Checkbox
+                    id="meal"
+                    checked={types.meal}
+                    onCheckedChange={() => toggleType('meal')}
+                  />
+                  <Label htmlFor="meal" className="cursor-pointer font-normal">🍽️ 식사봉사</Label>
                 </div>
-              </RadioGroup>
+              </div>
+              {!types.laundry && !types.meal && (
+                <p className="text-xs text-destructive">봉사 유형을 하나 이상 선택해주세요</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -92,7 +114,11 @@ export default function VolunteerModal({ open, onClose, date, onSubmit }) {
               />
             </div>
 
-            <Button type="submit" className="w-full rounded-xl" disabled={loading}>
+            <Button
+              type="submit"
+              className="w-full rounded-xl"
+              disabled={loading || (!types.laundry && !types.meal)}
+            >
               {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
               신청하기
             </Button>

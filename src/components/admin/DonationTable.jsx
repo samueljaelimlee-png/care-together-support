@@ -64,7 +64,7 @@ export default function DonationTable({ donations, onStatusChange, statusFilter,
                       <TableCell className="text-sm">{d.donor_phone}</TableCell>
                       <TableCell className="text-sm">{d.donor_email}</TableCell>
                       <TableCell className="text-right font-semibold">
-                        ₩{new Intl.NumberFormat('ko-KR').format(d.amount)}
+                        ${new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(d.amount)}
                       </TableCell>
                       <TableCell className="text-sm text-muted-foreground max-w-[150px] truncate">
                         {d.message || '-'}

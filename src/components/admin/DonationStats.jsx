@@ -10,9 +10,10 @@ export default function DonationStats({ donations }) {
   const totalConfirmed = confirmed.reduce((s, d) => s + (d.amount || 0), 0);
   const totalPending = pending.reduce((s, d) => s + (d.amount || 0), 0);
 
+  const fmt = (v) => `$${new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v)}`;
   const stats = [
-    { label: '확인된 모금', value: `₩${new Intl.NumberFormat('ko-KR').format(totalConfirmed)}`, sub: `${confirmed.length}건`, icon: CheckCircle2, color: 'text-green-600', bg: 'bg-green-50' },
-    { label: '대기 중', value: `₩${new Intl.NumberFormat('ko-KR').format(totalPending)}`, sub: `${pending.length}건`, icon: Clock, color: 'text-amber-600', bg: 'bg-amber-50' },
+    { label: '확인된 모금', value: fmt(totalConfirmed), sub: `${confirmed.length}건`, icon: CheckCircle2, color: 'text-green-600', bg: 'bg-green-50' },
+    { label: '대기 중', value: fmt(totalPending), sub: `${pending.length}건`, icon: Clock, color: 'text-amber-600', bg: 'bg-amber-50' },
     { label: '전체 신청', value: `${donations.length}건`, sub: `취소 ${cancelled.length}건`, icon: HandHeart, color: 'text-primary', bg: 'bg-primary/10' },
   ];
 

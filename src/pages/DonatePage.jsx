@@ -9,7 +9,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Loader2, CheckCircle2, Heart, HandHeart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const PRESET_AMOUNTS = [10000, 30000, 50000, 100000];
+const PRESET_AMOUNTS = [10, 30, 50, 100];
 
 export default function DonatePage() {
   const [form, setForm] = useState({
@@ -114,17 +114,21 @@ export default function DonatePage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="amount">금액 (원) *</Label>
-                    <Input
-                      id="amount"
-                      type="number"
-                      required
-                      min="1000"
-                      value={form.amount}
-                      onChange={(e) => setForm({ ...form, amount: e.target.value })}
-                      placeholder="금액을 입력하세요"
-                      className="rounded-xl text-lg font-semibold"
-                    />
+                    <Label htmlFor="amount">금액 ($) *</Label>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-semibold">$</span>
+                      <Input
+                        id="amount"
+                        type="number"
+                        required
+                        min="1"
+                        step="0.01"
+                        value={form.amount}
+                        onChange={(e) => setForm({ ...form, amount: e.target.value })}
+                        placeholder="0.00"
+                        className="rounded-xl text-lg font-semibold pl-7"
+                      />
+                    </div>
                     <div className="flex flex-wrap gap-2 mt-2">
                       {PRESET_AMOUNTS.map((a) => (
                         <Button
@@ -135,7 +139,7 @@ export default function DonatePage() {
                           className="rounded-full text-xs"
                           onClick={() => setForm({ ...form, amount: String(a) })}
                         >
-                          {new Intl.NumberFormat('ko-KR').format(a)}원
+                          ${a}
                         </Button>
                       ))}
                     </div>
