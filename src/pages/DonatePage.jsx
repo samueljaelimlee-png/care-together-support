@@ -164,9 +164,9 @@ export default function DonatePage() {
                     <Label>전달 방법 *</Label>
                     <div className="grid grid-cols-2 gap-3">
                       {[
-                        { value: 'venmo', label: 'Venmo 송금', emoji: '📱' },
-                        { value: 'cash', label: 'Cash 전달', emoji: '💵' },
-                      ].map(({ value, label, emoji }) => (
+                        { value: 'venmo', label: 'Venmo 송금', emoji: '📱', sub: '@Jenny-Kim-112' },
+                        { value: 'cash', label: 'Cash 전달', emoji: '💵', sub: null },
+                      ].map(({ value, label, emoji, sub }) => (
                         <button
                           key={value}
                           type="button"
@@ -178,11 +178,36 @@ export default function DonatePage() {
                           }`}
                         >
                           <span className="text-2xl">{emoji}</span>
-                          {label}
+                          <span>{label}</span>
+                          {sub && <span className="text-xs font-normal opacity-70">{sub}</span>}
                         </button>
                       ))}
                     </div>
                   </div>
+
+                  {/* Venmo QR 안내 */}
+                  {form.payment_method === 'venmo' && (
+                    <div className="rounded-xl border border-blue-200 bg-blue-50 p-4 flex flex-col items-center gap-2 text-center">
+                      <p className="text-sm font-semibold text-blue-800">Venmo 송금 정보</p>
+                      <img
+                        src="https://media.base44.com/images/public/6a271749be36c1ce6fc67f93/e1af5b21b_KakaoTalk_20260608_214837841.jpg"
+                        alt="Venmo QR Code"
+                        className="w-48 h-48 object-contain rounded-lg border border-blue-100 bg-white"
+                      />
+                      <div>
+                        <p className="font-bold text-blue-900">Jenny Kim</p>
+                        <a
+                          href="https://venmo.com/Jenny-Kim-112"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-blue-600 hover:underline"
+                        >
+                          @Jenny-Kim-112
+                        </a>
+                      </div>
+                      <p className="text-xs text-blue-700">위 QR코드를 스캔하거나 Venmo에서 <strong>@Jenny-Kim-112</strong>로 검색해 송금해주세요.</p>
+                    </div>
+                  )}
 
                   <div className="space-y-2">
                     <Label htmlFor="message">응원 메시지 (선택)</Label>
