@@ -29,14 +29,17 @@ const TYPE_LABELS = { laundry: '🧺 빨래', meal: '🍽️ 식사봉사' };
 
 export default function VolunteerSignupForm({ types = [], onSubmit, onCancel }) {
   const typeLabel = types.map(t => TYPE_LABELS[t] || t).join(' + ');
-  const [form, setForm] = useState({ volunteer_name: '', volunteer_phone: '', volunteer_email: '', memo: '', time_slot: '' });
+  const [form, setForm] = useState({ volunteer_name: '', volunteer_phone: '', volunteer_email: '', time_slot: '' });
+  const [memos, setMemos] = useState(() => Object.fromEntries(types.map(t => [t, ''])));
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    await onSubmit(form);
+    // onSubmit will be called per type by parent, passing memo per type
+    // We pass a function so parent can get per-type data
+    await onSubmit(form, memos);
     setLoading(false);
     setDone(true);
     setTimeout(() => {
@@ -87,10 +90,21 @@ export default function VolunteerSignupForm({ types = [], onSubmit, onCancel }) 
           <Label>이메일</Label>
           <Input type="email" value={form.volunteer_email} onChange={(e) => setForm({ ...form, volunteer_email: e.target.value })} placeholder="example@email.com" className="rounded-xl" />
         </div>
-        <div className="space-y-1.5">
-          <Label>메모</Label>
-          <Textarea value={form.memo} onChange={(e) => setForm({ ...form, memo: e.target.value })} placeholder="전달 사항이 있으면 적어주세요" className="rounded-xl resize-none h-20" />
-        </div>
+        {types.length === 1 ? (
+          <div className="space-y-1.5">
+            <Label>메모</Label>
+            <Textarea value={memos[types[0]] || ''} onChange={(e) => setMemos({ ...memos, [types[0]]: e.target.value })} placeholder="전달 사항이 있으면 적어주세요" className="rounded-xl resize-none h-20" />
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {types.map(type => (
+              <div key={type} className="space-y-1.5">
+                <Label>{TYPE_LABELS[type]} 메모</Label>
+                <Textarea value={memos[type] || ''} onChange={(e) => setMemos({ ...memos, [type]: e.target.value })} placeholder="전달 사항이 있으면 적어주세요" className="rounded-xl resize-none h-16" />
+              </div>
+            ))}
+          </div>
+        )}
         <Button type="submit" className="w-full rounded-xl" disabled={loading}>
           {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
           신청하기

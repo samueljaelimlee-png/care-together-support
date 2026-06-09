@@ -46,9 +46,9 @@ export default function VolunteerModal({ open, onClose, date, schedules = [], on
     );
   };
 
-  const handleSignupSubmit = async (data) => {
+  const handleSignupSubmit = async (data, memos = {}) => {
     for (const type of selectedTypes) {
-      await onSubmit({ ...data, type, date: dateStr });
+      await onSubmit({ ...data, type, date: dateStr, memo: memos[type] || '' });
     }
     setSelectedTypes([]);
     setShowForm(false);
