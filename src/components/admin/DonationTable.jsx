@@ -46,6 +46,7 @@ export default function DonationTable({ donations, onStatusChange, statusFilter,
                 <TableHead>전화번호</TableHead>
                 <TableHead>이메일</TableHead>
                 <TableHead className="text-right">금액</TableHead>
+                <TableHead>전달방법</TableHead>
                 <TableHead>메시지</TableHead>
                 <TableHead>상태</TableHead>
                 <TableHead>신청일</TableHead>
@@ -55,7 +56,7 @@ export default function DonationTable({ donations, onStatusChange, statusFilter,
             <TableBody>
               {filtered.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={8} className="text-center py-10 text-muted-foreground">
+                  <TableCell colSpan={9} className="text-center py-10 text-muted-foreground">
                     신청 내역이 없습니다
                   </TableCell>
                 </TableRow>
@@ -69,6 +70,13 @@ export default function DonationTable({ donations, onStatusChange, statusFilter,
                       <TableCell className="text-sm">{d.donor_phone}</TableCell>
                       <TableCell className="text-sm text-muted-foreground">{d.donor_email}</TableCell>
                       <TableCell className="text-right font-semibold">{fmtAmount(d.amount)}</TableCell>
+                      <TableCell className="text-sm">
+                        {d.payment_method === 'venmo' ? (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">📱 Venmo</span>
+                        ) : d.payment_method === 'cash' ? (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-200">💵 Cash</span>
+                        ) : '-'}
+                      </TableCell>
                       <TableCell className="text-sm text-muted-foreground max-w-[150px] truncate">{d.message || '-'}</TableCell>
                       <TableCell>
                         <Badge variant="outline" className={`gap-1 ${cfg.className}`}>
