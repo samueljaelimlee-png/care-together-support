@@ -1,11 +1,12 @@
 # 💛 HealingHeart — Care Together Support
 ### 혼자 싸우지 않도록 | No One Fights Alone
 
-> A volunteer coordination platform built for a single person in need — a woman in her 50s, battling cancer alone, with no family nearby. This app ensures that every day is covered: meals, baths, laundry, and more.
+> A volunteer coordination and fundraising platform built for a real person in need — a church community member in her 50s, battling cancer alone, with no family nearby. This app ensures that every day is covered: meals, bathing assistance, laundry, errands, and more.
 
 [![Live App](https://img.shields.io/badge/Live%20App-healing--heart--care.base44.app-brightgreen)](https://healing-heart-care.base44.app)
 [![Built With](https://img.shields.io/badge/Built%20With-Base44%20%7C%20React%20%7C%20Vite-purple)]()
-[![Purpose](https://img.shields.io/badge/Purpose-Community%20Care%20%7C%20Volunteer%20Scheduling-orange)]()
+[![Purpose](https://img.shields.io/badge/Purpose-Volunteer%20Scheduling%20%7C%20Care%20Coordination-orange)]()
+[![Community](https://img.shields.io/badge/Community-Church%20Based%20Care-blue)]()
 
 ---
 
@@ -13,32 +14,46 @@
 
 A woman in her 50s. A cancer diagnosis. No family. No relatives nearby.
 
-When her community wanted to help, the biggest obstacle wasn't willingness — it was **coordination**. Who is coming tomorrow? Is Tuesday covered? Does anyone know she hasn't eaten today?
+Her church community wanted to help — immediately and consistently. But coordinating rotating volunteers across meals, bathing, laundry, and errands through group chats and phone calls was chaotic. Slots were missed. People didn't know what was already covered. Fundraising records were scattered.
 
-**HealingHeart** was built to solve exactly that. No login required. No barriers. Just open the calendar, find an empty slot, and put your name in.
+**HealingHeart** was built to solve exactly that — designed around one core belief:
+
+> *If the app is hard to use, volunteers won't show up. Remove every barrier, and care fills every gap.*
+
+---
+
+## 👥 How This Was Built
+
+This app was a collaborative effort within the church community:
+
+- **Samuel Jae-rim Lee** — Technology lead: designed the user interface, built and deployed the app on Base44, and iterated on the UX based on real volunteer feedback to minimize friction and maximize accessibility
+- **Jenny H. Kim, Managing Director, Ernst & Young (New York, NY) / Church Treasurer, Church of Jesus (Paramus, NJ)** — Manages the fundraising records, donation tracking, and volunteer scheduling coordination through the app
+
+The goal was a platform where **anyone — regardless of tech skill — could sign up to help in under 30 seconds.**
 
 ---
 
 ## 💡 What This App Does
 
-HealingHeart is a **frictionless volunteer scheduling calendar** designed so that:
+HealingHeart is a **frictionless volunteer scheduling and care coordination platform**:
 
-- 📅 **Every day stays covered** — visual calendar shows gaps at a glance
-- ✍️ **Anyone can sign up instantly** — no account, no login required
-- 👥 **Duplicate volunteers are welcome** — more help is always better
-- 🍱 **Multiple care types tracked** — meals, bathing assistance, laundry, errands, companionship
-- 📖 **Scripture page included** — daily encouragement for the patient and volunteers
-- 📋 **My Schedule page** — volunteers can check their own upcoming commitments
+- 📅 **Visual calendar** — see every day at a glance; empty slots are immediately visible
+- ✍️ **No login required** — type your name and pick a slot; done
+- 👥 **Duplicate volunteers welcome** — backup coverage is encouraged, not blocked
+- 🍱 **Multiple care types** — meals, bathing assistance, laundry, errands, companionship
+- 💰 **Fundraising tracking** — donation records and support fund managed by the finance coordinator
+- 📋 **My Schedule page** — volunteers can review their upcoming commitments
+- 📖 **Scripture page** — daily encouragement for the patient and the caregiving community
 
 ---
 
 ## 🗓️ How It Works
 
-1. Open the app — **no login needed**
+1. Open the app — **no account or login needed**
 2. Browse the calendar for open care slots
-3. Click a date → select care type → enter your name
-4. Your slot is saved and visible to everyone
-5. Duplicate sign-ups are allowed — backup coverage is encouraged
+3. Click a date → select care type (meal / bath / laundry / errand) → enter your name
+4. Slot is saved and visible to the entire community
+5. Finance coordinator tracks donations and overall support fund in the same platform
 
 ---
 
@@ -46,9 +61,9 @@ HealingHeart is a **frictionless volunteer scheduling calendar** designed so tha
 
 | Page | Purpose |
 |------|---------|
-| **Calendar** (Home) | Main scheduling view — see all upcoming care slots |
-| **My Schedule** | View slots you've signed up for |
-| **Scripture** | Daily Bible verse for encouragement |
+| **Calendar** (Home) | Main scheduling view — all upcoming care slots visible at a glance |
+| **My Schedule** | View your own upcoming volunteer commitments |
+| **Scripture** | Daily Bible verse — encouragement for patient and volunteers |
 
 ---
 
@@ -56,9 +71,13 @@ HealingHeart is a **frictionless volunteer scheduling calendar** designed so tha
 
 > *"The biggest barrier to volunteer help is friction. Remove the login. Remove the form. Make it one tap."*
 
-Most volunteer platforms require account creation, approval workflows, and complicated scheduling. For spontaneous community care — especially in church networks and close-knit communities — **that friction kills momentum.**
+Most coordination tools require account creation, approval workflows, and complicated scheduling flows. For a church community responding to a crisis in real time, **that friction is the difference between care and a gap.**
 
-HealingHeart's design principle: **zero barrier to entry.** If someone wants to bring dinner on Thursday, they should be able to commit in under 30 seconds.
+HealingHeart's core design principles:
+- **Zero barrier to entry** — no login, no approval, no setup
+- **Visual clarity** — the calendar makes empty days impossible to miss
+- **Redundancy by design** — duplicate sign-ups are allowed; more coverage is always better
+- **One dashboard** — volunteer schedule and fundraising records in the same place
 
 ---
 
@@ -70,7 +89,7 @@ HealingHeart's design principle: **zero barrier to entry.** If someone wants to 
 | UI Components | shadcn/ui |
 | Platform | Base44 |
 | Version Control | GitHub |
-| Deployment | Base44 (live, no server setup required) |
+| Deployment | Base44 (live, zero server configuration) |
 
 ---
 
@@ -79,7 +98,7 @@ HealingHeart's design principle: **zero barrier to entry.** If someone wants to 
 ```
 care-together-support/
 ├── src/
-│   ├── components/       # UI components (Calendar, ScheduleCard, etc.)
+│   ├── components/       # UI components (Calendar, ScheduleCard, ScriptureView, etc.)
 │   ├── pages/            # Calendar, MySchedule, Scripture
 │   └── api/              # Base44 data layer
 ├── base44/               # Base44 platform config
@@ -131,13 +150,12 @@ Open `http://localhost:5173` in your browser.
 
 ## 🤝 Who This Is For
 
-This app was built for **one real person** — and for every community that rallies around someone in crisis.
+Built for one real person — and adaptable for any community that rallies around someone in crisis:
 
-It is designed for:
-- 🏥 **Cancer patients** living alone without family support
-- ⛪ **Church communities** coordinating care for a congregation member
-- 👨‍👩‍👧 **Neighbors and friends** who want to help but need simple coordination
-- 🤲 **Any individual** who needs consistent daily care from a rotating group of volunteers
+- 🏥 Patients living alone without family support
+- ⛪ Church communities coordinating consistent care for a member
+- 👨‍👩‍👧 Neighbor and friend networks needing simple, visible scheduling
+- 💛 Any individual who needs daily care from a rotating group of volunteers
 
 ---
 
@@ -160,6 +178,6 @@ Open source. Adapt freely for any community care situation.
 
 This app was not built as a school project or a portfolio piece.
 
-It was built because someone needed it.
+It was built because someone in our community needed it — and because technology should serve the most vulnerable, not just the most connected.
 
 > *"Carry each other's burdens." — Galatians 6:2*
