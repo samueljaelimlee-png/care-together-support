@@ -25,7 +25,8 @@ const TYPE_LABELS = {
 };
 
 export default function VolunteerModal({ open, onClose, date, schedules = [], onSubmit, onEdit, onDelete }) {
-  const [signupType, setSignupType] = useState(null); // 'laundry' | 'meal' | null
+  const [selectedTypes, setSelectedTypes] = useState([]); // [] | ['laundry'] | ['meal'] | ['laundry','meal']
+  const [showForm, setShowForm] = useState(false);
   const [editTarget, setEditTarget] = useState(null);
 
   if (!date) return null;
@@ -34,13 +35,23 @@ export default function VolunteerModal({ open, onClose, date, schedules = [], on
   const daySchedules = schedules.filter(s => s.date === dateStr);
 
   const handleClose = () => {
-    setSignupType(null);
+    setSelectedTypes([]);
+    setShowForm(false);
     onClose();
   };
 
+  const toggleType = (type) => {
+    setSelectedTypes(prev =>
+      prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]
+    );
+  };
+
   const handleSignupSubmit = async (data) => {
-    await onSubmit({ ...data, type: signupType, date: dateStr });
-    setSignupType(null);
+    for (const type of selectedTypes) {
+      await onSubmit({ ...data, type, date: dateStr });
+    }
+    setSelectedTypes([]);
+    setShowForm(false);
   };
 
   return (
@@ -53,11 +64,11 @@ export default function VolunteerModal({ open, onClose, date, schedules = [], on
             </DialogTitle>
           </DialogHeader>
 
-          {signupType ? (
+          {showForm ? (
             <VolunteerSignupForm
-              type={signupType}
+              types={selectedTypes}
               onSubmit={handleSignupSubmit}
-              onCancel={() => setSignupType(null)}
+              onCancel={() => setShowForm(false)}
             />
           ) : (
             <div className="space-y-5 mt-1">
@@ -114,26 +125,42 @@ export default function VolunteerModal({ open, onClose, date, schedules = [], on
                 </div>
               )}
 
-              {/* 신청 가능한 봉사 */}
+              {/* 신청 가능한 봉사 — 멀티 선택 */}
               <div>
-                <p className="text-sm font-semibold text-muted-foreground mb-2">신청 가능한 봉사</p>
+                <p className="text-sm font-semibold text-muted-foreground mb-2">봉사 선택 (중복 신청 가능)</p>
                 <div className="grid grid-cols-2 gap-3">
                   {[
                     { type: 'laundry', emoji: '🧺', label: '빨래' },
                     { type: 'meal', emoji: '🍽️', label: '식사봉사' },
-                  ].map(({ type, emoji, label }) => (
-                    <button
-                      key={type}
-                      onClick={() => setSignupType(type)}
-                      className="flex flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-dashed border-border py-5 text-sm text-muted-foreground hover:border-primary hover:text-primary hover:bg-primary/5 transition-all"
-                    >
-                      <span className="text-2xl">{emoji}</span>
-                      <span className="font-medium">{label}</span>
-                      <span className="text-lg leading-none">+</span>
-                    </button>
-                  ))}
+                  ].map(({ type, emoji, label }) => {
+                    const selected = selectedTypes.includes(type);
+                    return (
+                      <button
+                        key={type}
+                        onClick={() => toggleType(type)}
+                        className={`flex flex-col items-center justify-center gap-1.5 rounded-xl border-2 py-5 text-sm font-medium transition-all ${
+                          selected
+                            ? 'border-primary bg-primary/10 text-primary'
+                            : 'border-dashed border-border text-muted-foreground hover:border-primary hover:text-primary hover:bg-primary/5'
+                        }`}
+                      >
+                        <span className="text-2xl">{emoji}</span>
+                        <span>{label}</span>
+                        <span className="text-lg leading-none">{selected ? '✓' : '+'}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
+
+              {selectedTypes.length > 0 && (
+                <button
+                  onClick={() => setShowForm(true)}
+                  className="w-full py-3 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors"
+                >
+                  신청하기 ({selectedTypes.map(t => TYPE_LABELS[t]?.label).join(' + ')})
+                </button>
+              )}
             </div>
           )}
         </DialogContent>

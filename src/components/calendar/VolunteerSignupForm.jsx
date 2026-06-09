@@ -27,7 +27,8 @@ function formatTimeSlot(slot) {
 
 const TYPE_LABELS = { laundry: '🧺 빨래', meal: '🍽️ 식사봉사' };
 
-export default function VolunteerSignupForm({ type, onSubmit, onCancel }) {
+export default function VolunteerSignupForm({ types = [], onSubmit, onCancel }) {
+  const typeLabel = types.map(t => TYPE_LABELS[t] || t).join(' + ');
   const [form, setForm] = useState({ volunteer_name: '', volunteer_phone: '', volunteer_email: '', memo: '', time_slot: '' });
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
@@ -59,7 +60,7 @@ export default function VolunteerSignupForm({ type, onSubmit, onCancel }) {
         <ChevronLeft className="w-4 h-4" />
         뒤로
       </button>
-      <p className="font-semibold text-sm mb-4">{TYPE_LABELS[type]} 신청</p>
+      <p className="font-semibold text-sm mb-4">{typeLabel} 신청</p>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-1.5">
           <Label>시간대</Label>
