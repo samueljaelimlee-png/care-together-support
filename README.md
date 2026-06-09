@@ -26,7 +26,7 @@ Her church community wanted to help — immediately and consistently. But coordi
 
 This app was a collaborative effort within the church community:
 
-- **Samuel Jae-rim Lee** — Technology lead: designed the user interface, built and deployed the app on Base44, and iterated on the UX based on real volunteer feedback to minimize friction and maximize accessibility
+- **Samuel Lee** — Technology lead: designed the user interface, built and deployed the app on Base44, and iterated on the UX based on real volunteer feedback to minimize friction and maximize accessibility
 - **Jenny H. Kim, Managing Director, Ernst & Young (New York, NY) / Church Treasurer, Church of Jesus (Paramus, NJ)** — Manages the fundraising records, donation tracking, and volunteer scheduling coordination through the app
 
 The goal was a platform where **anyone — regardless of tech skill — could sign up to help in under 30 seconds.**
@@ -161,7 +161,7 @@ Built for one real person — and adaptable for any community that rallies aroun
 
 ## 👤 Developer
 
-**Samuel Jae-rim Lee**
+**Samuel Lee**
 - 11th Grade, Academies at Englewood / Dwight Morrow High School
 - Englewood, New Jersey
 - GitHub: [@samueljaelimlee-png](https://github.com/samueljaelimlee-png)
