@@ -81,7 +81,7 @@ export default function Home() {
       </motion.div>
 
       {/* Donation Total */}
-      <DonationTotal total={total} count={donations.length} closed={!isActive} />
+      <DonationTotal total={total} count={donations.length} closed={!isActive} message={currentRound?.message} />
 
       {/* Quick Actions */}
       <QuickActions />

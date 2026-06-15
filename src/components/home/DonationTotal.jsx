@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Heart, TrendingUp, Lock } from 'lucide-react';
 
-export default function DonationTotal({ total, count, closed = false }) {
+export default function DonationTotal({ total, count, closed = false, message = '' }) {
   const formattedTotal = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(total);
 
   return (
@@ -42,6 +42,18 @@ export default function DonationTotal({ total, count, closed = false }) {
             총 <span className="font-semibold text-white/90">{count}건</span>의 따뜻한 마음이 모였습니다
           </p>
         </div>
+
+        {closed && message && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.4 }}
+            className="mt-6 pt-5 border-t border-white/15"
+          >
+            <p className="text-sm font-semibold text-white/90 mb-2">1차 모금이 마감되었습니다</p>
+            <p className="text-xs leading-relaxed text-white/70 whitespace-pre-line">{message}</p>
+          </motion.div>
+        )}
       </div>
     </motion.div>
   );
