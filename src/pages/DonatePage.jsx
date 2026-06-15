@@ -266,7 +266,7 @@ export default function DonatePage() {
                   <Lock className="w-7 h-7 text-slate-500" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-foreground">모금이 마감되었습니다</h2>
+                  <h2 className="text-lg font-bold text-foreground">1차 모금이 마감되었습니다</h2>
                   <p className="text-sm text-muted-foreground mt-1">
                     {currentRound?.message || '현재 모금이 마감되었습니다. 다음 모금을 기다려주세요.'}
                   </p>

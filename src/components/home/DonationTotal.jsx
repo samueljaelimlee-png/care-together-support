@@ -22,7 +22,7 @@ export default function DonationTotal({ total, count, closed = false }) {
             {closed ? <Lock className="w-5 h-5" /> : <Heart className="w-5 h-5 fill-white/50" />}
           </div>
           <p className="text-sm font-medium text-white/80 tracking-wide uppercase">
-            함께돌봄 모금 현황 {closed && '(마감)'}
+            함께돌봄 모금 현황 {closed && '(1차 마감)'}
           </p>
         </div>
 
