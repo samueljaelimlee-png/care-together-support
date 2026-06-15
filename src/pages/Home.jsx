@@ -27,6 +27,14 @@ export default function Home() {
     initialData: [],
   });
 
+  const { data: rounds = [] } = useQuery({
+    queryKey: ['fundraising-round-home'],
+    queryFn: () => base44.entities.FundraisingRound.list('-created_date'),
+    initialData: [],
+  });
+
+  const currentRound = rounds[0];
+  const isActive = currentRound?.active !== false;
   const total = donations.reduce((sum, d) => sum + (d.amount || 0), 0);
 
   return (
@@ -73,7 +81,7 @@ export default function Home() {
       </motion.div>
 
       {/* Donation Total */}
-      <DonationTotal total={total} count={donations.length} />
+      <DonationTotal total={total} count={donations.length} closed={!isActive} />
 
       {/* Quick Actions */}
       <QuickActions />

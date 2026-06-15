@@ -7,6 +7,7 @@ import { Navigate } from 'react-router-dom';
 import DonationStats from '../components/admin/DonationStats';
 import DonationTable from '../components/admin/DonationTable';
 import DonationChart from '../components/admin/DonationChart';
+import FundraisingToggle from '../components/admin/FundraisingToggle';
 
 export default function AdminDashboard() {
   const [user, setUser] = useState(null);
@@ -72,6 +73,7 @@ export default function AdminDashboard() {
       </div>
 
       <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
+        <FundraisingToggle />
         <DonationStats donations={donations} />
         <DonationChart donations={donations} />
         <DonationTable

@@ -1,0 +1,26 @@
+{
+  "name": "FundraisingRound",
+  "type": "object",
+  "properties": {
+    "round": {
+      "type": "number",
+      "description": "\ubaa8\uae08 \ud68c\ucc28"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true,
+      "description": "\ud604\uc7ac \ubaa8\uae08 \ud65c\uc131\ud654 \uc5ec\ubd80"
+    },
+    "title": {
+      "type": "string",
+      "description": "\ubaa8\uae08 \uc81c\ubaa9"
+    },
+    "message": {
+      "type": "string",
+      "description": "\ub9c8\uac10 \ub610\ub294 \uc548\ub0b4 \uba54\uc2dc\uc9c0"
+    }
+  },
+  "required": [
+    "round"
+  ]
+}

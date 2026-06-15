@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
-import { Loader2, CheckCircle2, Heart, HandHeart } from 'lucide-react';
+import { Loader2, CheckCircle2, Heart, HandHeart, TrendingUp, Lock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import MyDonations from '@/components/donate/MyDonations';
 
@@ -14,6 +14,23 @@ const PRESET_AMOUNTS = [10, 30, 50, 100];
 
 export default function DonatePage() {
   const queryClient = useQueryClient();
+
+  const { data: rounds = [] } = useQuery({
+    queryKey: ['fundraising-round'],
+    queryFn: () => base44.entities.FundraisingRound.list('-created_date'),
+    initialData: [],
+  });
+
+  const { data: donations = [] } = useQuery({
+    queryKey: ['donations-closed-stats'],
+    queryFn: () => base44.entities.Donation.filter({ status: 'confirmed' }),
+    initialData: [],
+  });
+
+  const currentRound = rounds[0];
+  const isActive = currentRound?.active !== false;
+  const totalAmount = donations.reduce((sum, d) => sum + (d.amount || 0), 0);
+
   const [form, setForm] = useState({
     donor_name: '',
     donor_phone: '',
@@ -83,7 +100,7 @@ export default function DonatePage() {
 
             <MyDonations donorEmail={submittedEmail} />
           </motion.div>
-        ) : (
+        ) : isActive ? (
           <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <Card className="border-border/50 shadow-sm">
               <CardContent className="pt-6">
@@ -240,6 +257,45 @@ export default function DonatePage() {
             {form.donor_email && form.donor_email.includes('@') && (
               <MyDonations donorEmail={form.donor_email} />
             )}
+          </motion.div>
+        ) : (
+          <motion.div key="closed" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <Card className="border-border/50 shadow-sm">
+              <CardContent className="pt-6 pb-6 text-center space-y-4">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-slate-100">
+                  <Lock className="w-7 h-7 text-slate-500" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-foreground">모금이 마감되었습니다</h2>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {currentRound?.message || '현재 모금이 마감되었습니다. 다음 모금을 기다려주세요.'}
+                  </p>
+                </div>
+
+                {/* Stats */}
+                <div className="rounded-xl bg-slate-50 p-4 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">총 모금액</span>
+                    <span className="text-lg font-bold text-foreground">
+                      ${new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(totalAmount)}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">총 건수</span>
+                    <span className="text-lg font-bold text-foreground">{donations.length}건</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">상태</span>
+                    <span className="text-sm font-semibold text-slate-500">마감</span>
+                  </div>
+                </div>
+
+                <p className="text-xs text-muted-foreground">
+                  <TrendingUp className="w-3 h-3 inline mr-1" />
+                  확인된(confirmed) 기부 건만 집계됩니다
+                </p>
+              </CardContent>
+            </Card>
           </motion.div>
         )}
       </AnimatePresence>
