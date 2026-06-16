@@ -15,7 +15,8 @@ export default function VisitorStats() {
 
   const today = new Date().toISOString().slice(0, 10);
   const todayCount = visitors.filter((v) => v.created_date?.slice(0, 10) === today).length;
-  const totalCount = visitors.length;
+  const BASE_VISITORS = 204;
+  const totalCount = BASE_VISITORS + visitors.length;
 
   return (
     <div className="grid grid-cols-2 gap-4">
