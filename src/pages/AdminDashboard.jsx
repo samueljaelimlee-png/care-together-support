@@ -8,6 +8,7 @@ import DonationStats from '../components/admin/DonationStats';
 import DonationTable from '../components/admin/DonationTable';
 import DonationChart from '../components/admin/DonationChart';
 import FundraisingToggle from '../components/admin/FundraisingToggle';
+import VisitorStats from '../components/admin/VisitorStats';
 
 export default function AdminDashboard() {
   const [user, setUser] = useState(null);
@@ -74,6 +75,7 @@ export default function AdminDashboard() {
 
       <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
         <FundraisingToggle />
+        <VisitorStats />
         <DonationStats donations={donations} />
         <DonationChart donations={donations} />
         <DonationTable

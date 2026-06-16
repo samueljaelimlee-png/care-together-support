@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
+import { base44 } from '@/api/base44Client';
 
 export default function Layout() {
+  const recorded = useRef(false);
+
+  useEffect(() => {
+    if (recorded.current) return;
+    recorded.current = true;
+    base44.entities.Visitor.create({}).catch(() => {});
+  }, []);
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
