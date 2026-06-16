@@ -25,14 +25,6 @@ export default function UpcomingVolunteers() {
     .filter((s) => s.date >= monthStart && s.date <= monthEnd)
     .sort((a, b) => a.date.localeCompare(b.date));
 
-  const grouped = {};
-  thisMonthSchedules.forEach((s) => {
-    if (!grouped[s.date]) grouped[s.date] = [];
-    grouped[s.date].push(s);
-  });
-
-  const days = Object.keys(grouped);
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -58,32 +50,24 @@ export default function UpcomingVolunteers() {
         </Link>
       </div>
 
-      {days.length === 0 ? (
+      {thisMonthSchedules.length === 0 ? (
         <p className="text-sm text-muted-foreground text-center py-4">
           이번 달 등록된 봉사 일정이 없습니다
         </p>
       ) : (
-        <div className="space-y-2 max-h-80 overflow-y-auto">
-          {days.map((date) => {
-            const daySchedules = grouped[date];
-            const d = new Date(date + 'T00:00:00');
+        <div className="space-y-1.5 max-h-80 overflow-y-auto">
+          {thisMonthSchedules.map((s, i) => {
+            const d = new Date(s.date + 'T00:00:00');
             const dayLabel = format(d, 'M/d (E)', { locale: ko });
 
             return (
-              <div key={date} className="rounded-xl bg-muted/30 p-3">
-                <p className="text-xs font-semibold text-muted-foreground mb-2">{dayLabel}</p>
-                <div className="space-y-1.5">
-                  {daySchedules.map((s, i) => (
-                    <div key={i} className="flex items-center gap-2 text-sm">
-                      <span className={`w-2 h-2 rounded-full flex-shrink-0 ${DOT_COLORS[s.type] || 'bg-slate-300'}`} />
-                      <span className="text-xs text-muted-foreground w-10 flex-shrink-0">{s.time_slot || '-'}</span>
-                      <span className="text-xs font-medium text-foreground flex-1">{s.volunteer_name}</span>
-                      <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full">
-                        {TYPE_LABELS[s.type] || s.type}
-                      </span>
-                    </div>
-                  ))}
-                </div>
+              <div key={i} className="flex items-center gap-2 rounded-lg hover:bg-muted/50 px-2 py-2 -mx-2 transition-colors">
+                <span className={`w-2 h-2 rounded-full flex-shrink-0 ${DOT_COLORS[s.type] || 'bg-slate-300'}`} />
+                <span className="text-xs text-muted-foreground w-20 flex-shrink-0">{dayLabel} {s.time_slot || ''}</span>
+                <span className="text-sm font-medium text-foreground flex-1">{s.volunteer_name}</span>
+                <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full flex-shrink-0">
+                  {TYPE_LABELS[s.type] || s.type}
+                </span>
               </div>
             );
           })}
