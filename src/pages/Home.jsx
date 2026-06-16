@@ -6,6 +6,7 @@ import { Heart, BookOpen, ChevronRight, HelpCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import DonationTotal from '../components/home/DonationTotal';
 import QuickActions from '../components/home/QuickActions';
+import UpcomingVolunteers from '../components/home/UpcomingVolunteers';
 
 const FEATURED_VERSE = {
   verse: '갈라디아서 6:2',
@@ -80,11 +81,14 @@ export default function Home() {
         </Link>
       </motion.div>
 
-      {/* Donation Total */}
-      <DonationTotal total={total} count={donations.length} closed={!isActive} message={currentRound?.message} />
+      {/* Upcoming Volunteers Calendar */}
+      <UpcomingVolunteers />
 
       {/* Quick Actions */}
       <QuickActions />
+
+      {/* Donation Total (마감 안내) */}
+      <DonationTotal total={total} count={donations.length} closed={!isActive} message={currentRound?.message} />
 
       {/* Featured Verse */}
       <motion.div
