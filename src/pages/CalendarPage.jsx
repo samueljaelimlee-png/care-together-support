@@ -105,6 +105,10 @@ export default function CalendarPage() {
                 <span className="w-2 h-2 rounded-full bg-amber-500 inline-block" />
                 식사봉사
               </span>
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium border bg-emerald-50 text-emerald-700 border-emerald-200">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" />
+                기타봉사
+              </span>
             </div>
 
             {/* Filter buttons */}
@@ -113,6 +117,7 @@ export default function CalendarPage() {
                 { key: 'all', label: '전체' },
                 { key: 'laundry', label: '🧺 빨래' },
                 { key: 'meal', label: '🍽️ 식사봉사' },
+                { key: 'other', label: '🤝 기타봉사' },
               ].map(({ key, label }) => (
                 <Button
                   key={key}
