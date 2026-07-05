@@ -22,6 +22,7 @@ function formatTimeSlot(slot) {
 const TYPE_LABELS = {
   laundry: { label: '빨래', emoji: '🧺', color: 'bg-blue-100 text-blue-700 border-blue-200' },
   meal: { label: '식사봉사', emoji: '🍽️', color: 'bg-amber-100 text-amber-700 border-amber-200' },
+  other: { label: '기타봉사', emoji: '🤝', color: 'bg-emerald-100 text-emerald-700 border-emerald-200' },
 };
 
 export default function VolunteerModal({ open, onClose, date, schedules = [], onSubmit, onEdit, onDelete }) {
@@ -128,10 +129,11 @@ export default function VolunteerModal({ open, onClose, date, schedules = [], on
               {/* 신청 가능한 봉사 — 멀티 선택 */}
               <div>
                 <p className="text-sm font-semibold text-muted-foreground mb-2">봉사 선택 (중복 신청 가능)</p>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {[
                     { type: 'laundry', emoji: '🧺', label: '빨래' },
                     { type: 'meal', emoji: '🍽️', label: '식사봉사' },
+                    { type: 'other', emoji: '🤝', label: '기타봉사' },
                   ].map(({ type, emoji, label }) => {
                     const selected = selectedTypes.includes(type);
                     return (

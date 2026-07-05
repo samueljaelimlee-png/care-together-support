@@ -11,9 +11,10 @@
       "type": "string",
       "enum": [
         "laundry",
-        "meal"
+        "meal",
+        "other"
       ],
-      "description": "\ubd09\uc0ac \uc720\ud615 (\ube68\ub798/\uc2dd\uc0ac\ubd09\uc0ac)"
+      "description": "\ubd09\uc0ac \uc720\ud615 (\ube68\ub798/\uc2dd\uc0ac\ubd09\uc0ac/\uae30\ud0c0\ubd09\uc0ac)"
     },
     "time_slot": {
       "type": "string",

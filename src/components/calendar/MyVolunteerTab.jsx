@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { format, parseISO } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { Heart, Droplets, UtensilsCrossed, Pencil, Trash2 } from 'lucide-react';
+import { Heart, Droplets, UtensilsCrossed, HandHeart, Pencil, Trash2 } from 'lucide-react';
 
 function formatTimeSlot(slot) {
   if (!slot) return '';
@@ -22,6 +22,7 @@ import VolunteerEditModal from './VolunteerEditModal';
 const TYPE_CONFIG = {
   laundry: { label: '빨래', icon: Droplets, bg: 'bg-blue-100', text: 'text-blue-600', badge: 'bg-blue-50 text-blue-600 border-blue-200' },
   meal: { label: '식사봉사', icon: UtensilsCrossed, bg: 'bg-amber-100', text: 'text-amber-600', badge: 'bg-amber-50 text-amber-600 border-amber-200' },
+  other: { label: '기타봉사', icon: HandHeart, bg: 'bg-emerald-100', text: 'text-emerald-600', badge: 'bg-emerald-50 text-emerald-600 border-emerald-200' },
 };
 
 function ScheduleRow({ s, onEdit, onDelete }) {

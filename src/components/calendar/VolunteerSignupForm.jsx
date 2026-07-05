@@ -25,7 +25,7 @@ function formatTimeSlot(slot) {
   return `${fmt(start)} ~ ${fmt(end)}`;
 }
 
-const TYPE_LABELS = { laundry: '🧺 빨래', meal: '🍽️ 식사봉사' };
+const TYPE_LABELS = { laundry: '🧺 빨래', meal: '🍽️ 식사봉사', other: '🤝 기타봉사' };
 
 export default function VolunteerSignupForm({ types = [], onSubmit, onCancel }) {
   const typeLabel = types.map(t => TYPE_LABELS[t] || t).join(' + ');

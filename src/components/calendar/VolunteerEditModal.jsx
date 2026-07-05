@@ -65,6 +65,7 @@ export default function VolunteerEditModal({ open, onClose, schedule, onSave }) 
               <SelectContent>
                 <SelectItem value="laundry">🧺 빨래</SelectItem>
                 <SelectItem value="meal">🍽️ 식사봉사</SelectItem>
+                <SelectItem value="other">🤝 기타봉사</SelectItem>
               </SelectContent>
             </Select>
           </div>

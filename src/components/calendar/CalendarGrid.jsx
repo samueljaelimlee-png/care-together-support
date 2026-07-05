@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 const DOT_COLORS = {
   laundry: 'bg-blue-400',
   meal: 'bg-amber-400',
+  other: 'bg-emerald-400',
 };
 
 export default function CalendarGrid({ currentMonth, schedules, onDateClick }) {

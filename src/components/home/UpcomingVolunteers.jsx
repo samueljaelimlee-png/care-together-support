@@ -7,8 +7,8 @@ import { ko } from 'date-fns/locale';
 import { Calendar, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const TYPE_LABELS = { laundry: '빨래', meal: '식사' };
-const DOT_COLORS = { laundry: 'bg-blue-400', meal: 'bg-amber-400' };
+const TYPE_LABELS = { laundry: '빨래', meal: '식사', other: '기타' };
+const DOT_COLORS = { laundry: 'bg-blue-400', meal: 'bg-amber-400', other: 'bg-emerald-400' };
 
 export default function UpcomingVolunteers() {
   const today = new Date();
