@@ -39,6 +39,11 @@
       ],
       "default": "pending",
       "description": "\uc0c1\ud0dc"
+    },
+    "donation_date": {
+      "type": "string",
+      "format": "date",
+      "description": "\uae30\ubd80\uc77c (\uc9c0\uc815\ub41c \uacbd\uc6b0 \ud45c\uc2dc\uc5d0 \uc0ac\uc6a9)"
     }
   },
   "required": [
