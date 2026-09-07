@@ -9,12 +9,13 @@ const fmt = (v) => `$${new Intl.NumberFormat('en-US', { minimumFractionDigits: 2
 
 export default function DonationChart({ donations }) {
   // Group confirmed donations by month
-  const confirmed = donations.filter(d => d.status === 'confirmed' && d.created_date);
+  const confirmed = donations.filter(d => d.status === 'confirmed' && (d.donation_date || d.created_date));
 
   const monthMap = {};
   confirmed.forEach(d => {
-    const key = format(new Date(d.created_date), 'yyyy-MM');
-    const label = format(new Date(d.created_date), 'M월', { locale: ko });
+    const dt = new Date(d.donation_date || d.created_date);
+    const key = format(dt, 'yyyy-MM');
+    const label = format(dt, 'M월', { locale: ko });
     if (!monthMap[key]) monthMap[key] = { key, label, amount: 0, count: 0 };
     monthMap[key].amount += d.amount || 0;
     monthMap[key].count += 1;

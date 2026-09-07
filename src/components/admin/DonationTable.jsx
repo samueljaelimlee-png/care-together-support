@@ -74,7 +74,7 @@ export default function DonationTable({ donations, onStatusChange, statusFilter,
                     <PaymentBadge method={d.payment_method} />
                   </div>
                   <span className="text-xs text-muted-foreground">
-                    {d.created_date ? format(new Date(d.created_date), 'MM/dd HH:mm') : '-'}
+                    {d.donation_date ? format(new Date(d.donation_date), 'MM/dd') : d.created_date ? format(new Date(d.created_date), 'MM/dd HH:mm') : '-'}
                   </span>
                 </div>
                 {d.message && (
@@ -141,7 +141,7 @@ export default function DonationTable({ donations, onStatusChange, statusFilter,
                         </Badge>
                       </TableCell>
                       <TableCell className="text-sm text-muted-foreground">
-                        {d.created_date ? format(new Date(d.created_date), 'MM/dd HH:mm') : '-'}
+                        {d.donation_date ? format(new Date(d.donation_date), 'MM/dd') : d.created_date ? format(new Date(d.created_date), 'MM/dd HH:mm') : '-'}
                       </TableCell>
                       <TableCell>
                         <div className="flex gap-1">
