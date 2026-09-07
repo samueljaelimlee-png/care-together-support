@@ -14,6 +14,13 @@ const STATUS_CONFIG = {
 
 const fmtAmount = (v) => `$${new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v)}`;
 
+// created_date는 UTC로 저장되므로 현지 시간대로 변환해서 표시
+const toLocalDate = (s) => {
+  if (!s) return null;
+  const iso = s.endsWith('Z') ? s : s.replace(/(\.\d{3})\d+/, '$1') + 'Z';
+  return new Date(iso);
+};
+
 function PaymentBadge({ method }) {
   if (method === 'venmo') return (
     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">📱 Venmo</span>
@@ -74,7 +81,7 @@ export default function DonationTable({ donations, onStatusChange, statusFilter,
                     <PaymentBadge method={d.payment_method} />
                   </div>
                   <span className="text-xs text-muted-foreground">
-                    {d.donation_date ? format(new Date(d.donation_date), 'MM/dd') : d.created_date ? format(new Date(d.created_date), 'MM/dd HH:mm') : '-'}
+                    {d.donation_date ? format(new Date(d.donation_date), 'MM/dd') : d.created_date ? format(toLocalDate(d.created_date), 'MM/dd HH:mm') : '-'}
                   </span>
                 </div>
                 {d.message && (
@@ -141,7 +148,7 @@ export default function DonationTable({ donations, onStatusChange, statusFilter,
                         </Badge>
                       </TableCell>
                       <TableCell className="text-sm text-muted-foreground">
-                        {d.donation_date ? format(new Date(d.donation_date), 'MM/dd') : d.created_date ? format(new Date(d.created_date), 'MM/dd HH:mm') : '-'}
+                        {d.donation_date ? format(new Date(d.donation_date), 'MM/dd') : d.created_date ? format(toLocalDate(d.created_date), 'MM/dd HH:mm') : '-'}
                       </TableCell>
                       <TableCell>
                         <div className="flex gap-1">

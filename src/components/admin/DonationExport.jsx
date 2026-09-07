@@ -6,6 +6,13 @@ import { Download, FileSpreadsheet, Building2 } from 'lucide-react';
 const STATUS_LABELS = { pending: '대기', confirmed: '확인', cancelled: '취소' };
 const METHOD_LABELS = { venmo: 'Venmo', cash: 'Cash' };
 
+// created_date는 UTC로 저장되므로 현지 시간대로 변환해서 표시
+const toLocalDate = (s) => {
+  if (!s) return null;
+  const iso = s.endsWith('Z') ? s : s.replace(/(\.\d{3})\d+/, '$1') + 'Z';
+  return new Date(iso);
+};
+
 function escapeCsv(v) {
   const s = String(v ?? '');
   return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
@@ -35,7 +42,7 @@ function buildRows(donations) {
     METHOD_LABELS[d.payment_method] || d.payment_method || '-',
     STATUS_LABELS[d.status] || d.status,
     d.donation_date || '',
-    d.created_date ? format(new Date(d.created_date), 'yyyy-MM-dd HH:mm') : '',
+    d.created_date ? format(toLocalDate(d.created_date), 'yyyy-MM-dd HH:mm') : '',
     d.message || '',
   ]);
   return [header, ...rows];
