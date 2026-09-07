@@ -8,6 +8,7 @@ import DonationStats from '../components/admin/DonationStats';
 import DonationTable from '../components/admin/DonationTable';
 import DonationChart from '../components/admin/DonationChart';
 import FundraisingToggle from '../components/admin/FundraisingToggle';
+import DonationExport from '../components/admin/DonationExport';
 import VisitorStats from '../components/admin/VisitorStats';
 
 export default function AdminDashboard() {
@@ -78,6 +79,7 @@ export default function AdminDashboard() {
         <VisitorStats />
         <DonationStats donations={donations} />
         <DonationChart donations={donations} />
+        <DonationExport donations={donations} />
         <DonationTable
           donations={donations}
           onStatusChange={handleStatusChange}
