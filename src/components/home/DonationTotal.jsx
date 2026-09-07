@@ -50,7 +50,7 @@ export default function DonationTotal({ total, count, closed = false, message = 
             transition={{ delay: 0.5, duration: 0.4 }}
             className="mt-6 pt-5 border-t border-white/15"
           >
-            <p className="text-sm font-semibold text-white/90 mb-2">1차 모금이 마감되었습니다</p>
+            <p className="text-sm font-semibold text-white/90 mb-2">모금이 마감되었습니다</p>
             <p className="text-xs leading-relaxed text-white/70 whitespace-pre-line">{message}</p>
           </motion.div>
         )}
