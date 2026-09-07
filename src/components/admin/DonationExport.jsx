@@ -33,7 +33,7 @@ function downloadCsv(filename, rows) {
 }
 
 function buildRows(donations) {
-  const header = ['이름', '전화번호', '이메일', '금액($)', '전달방법', '상태', '기부일', '신청일', '메시지'];
+  const header = ['이름', '전화번호', '이메일', '금액($)', '전달방법', '상태', '기부일', '메시지'];
   const rows = donations.map((d) => [
     d.donor_name,
     d.donor_phone,
@@ -42,7 +42,6 @@ function buildRows(donations) {
     METHOD_LABELS[d.payment_method] || d.payment_method || '-',
     STATUS_LABELS[d.status] || d.status,
     d.donation_date || '',
-    d.created_date ? format(toLocalDate(d.created_date), 'yyyy-MM-dd HH:mm') : '',
     d.message || '',
   ]);
   return [header, ...rows];
@@ -60,7 +59,7 @@ export default function DonationExport({ donations }) {
       .sort((a, b) => (a.donation_date || '').localeCompare(b.donation_date || ''));
     const rows = buildRows(rent);
     const total = rent.reduce((sum, d) => sum + (d.amount || 0), 0);
-    rows.push(['합계', '', '', total, '', '', '', '', '']);
+    rows.push(['합계', '', '', total, '', '', '', '']);
     downloadCsv(`렌트비_지원현황_${format(new Date(), 'yyyyMMdd')}.xls`, rows);
   };
 
